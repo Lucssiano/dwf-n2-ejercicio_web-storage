@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Storage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+    <script defer type="module" src="./index.ts"></script>
+  </head>
+
+  <body>
+    <header class="header"></header>
+
+    <div class="content-container">
+      <main class="main">
+        <h1 class="main__title">Mis pendientes</h1>
+      </main>
+
+      <section class="form-container">
+        <form class="post-it-form">
+          <div class="post-it__form-input-container">
+            <label for="form-input" class="post-it-form__label">Nuevo pendiente</label>
+            <input type="text" id="form-input" class="post-it-form__input" placeholder="Agregá un post-it">
+          </div>
+          <button class="post-it-form__button">Agregar</button>
+        </form>
+      </section>
+
+      <section class="post-it__container">
+        <!-- <img src="./img/prueba.webp" alt=""> -->
+
+        <post-it></post-it>
+        <post-it></post-it>
+        <post-it></post-it>
+        <post-it></post-it>
+        <post-it></post-it>
+        <post-it></post-it>
+      </section>
+    </div>
+  </body>
+
+</html>

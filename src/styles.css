@@ -1,0 +1,85 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: 'Roboto', sans-serif;
+}
+
+.header {
+	background-color: #ff8282;
+	height: 60px;
+}
+
+.content-container {
+	max-width: 960px;
+	margin: 0 auto;
+	padding-inline: 30px;
+}
+
+/* Main Block */
+/* .main {
+} */
+.main__title {
+	font-size: 52px;
+	font-weight: 700;
+}
+
+/* Form block */
+/* .form-container {
+} */
+.post-it-form {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+@media (min-width: 960px) {
+	.post-it-form {
+		flex-direction: row;
+		align-items: end;
+		gap: 25px;
+	}
+}
+.post-it__form-input-container {
+	flex: 1;
+}
+.post-it-form__label {
+	font-size: 18px;
+}
+.post-it-form__input {
+	height: 55px;
+	width: 100%;
+	padding: 10px;
+	border-radius: 4px;
+	border: 2px solid #000;
+	margin-top: 5px;
+}
+.post-it-form__button {
+	cursor: pointer;
+	height: 55px;
+	width: 100%;
+	background-color: #9cbbe9;
+	font-family: 'Roboto', sans-serif;
+	font-size: 22px;
+	font-weight: 500;
+	border: none;
+	border-radius: 4px;
+}
+@media (min-width: 960px) {
+	.post-it-form__button {
+		width: 312px;
+	}
+}
+
+/* Post-it Block */
+.post-it__container {
+	margin-top: 45px;
+	display: grid;
+	gap: 20px;
+}
+@media (min-width: 960px) {
+	.post-it__container {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
