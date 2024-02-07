@@ -71,15 +71,3 @@ body {
 		width: 312px;
 	}
 }
-
-/* Post-it Block */
-.post-it__container {
-	margin-top: 45px;
-	display: grid;
-	gap: 20px;
-}
-@media (min-width: 960px) {
-	.post-it__container {
-		grid-template-columns: repeat(3, 1fr);
-	}
-}

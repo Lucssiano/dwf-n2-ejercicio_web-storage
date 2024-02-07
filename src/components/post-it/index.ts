@@ -2,54 +2,105 @@ import { state } from '../../state';
 
 class PostIt extends HTMLElement {
 	shadow = this.attachShadow({ mode: 'open' });
+	tasks = {
+		all: [],
+		eliminated: [],
+		completed: [],
+	};
 
 	constructor() {
 		super();
 	}
 
 	connectedCallback() {
+		state.subscribe(() => this.syncWithState());
+		this.syncWithState();
+	}
+
+	syncWithState() {
+		const lastState = state.getState();
+		this.tasks = lastState.tasks;
+		// console.log(this.tasks);
 		this.render();
-		// state.subscribe(() => {
-		// 	this.render();
-		// });
 	}
 
 	render() {
+		const postIts = this.tasks.all;
+
 		this.shadow.innerHTML = `
-				<div class="post-it-block">
-					<div class="post-it-block__container">
-						<div class="post-it-item">Resolver el desafío</div>
-						<input type="checkbox" class="post-it-checkbox">
+		<div class="post-it__container">
+			${postIts
+				.map((postIt) => {
+					return `
+					<div class="post-it-block">
+						<div class="post-it-block__container">
+							<div class="post-it-item">${postIt}</div>
+							<input type="checkbox" class="post-it-checkbox">
+						</div>
+						<div class="post-it-trash-container">
+							<img src="https://cdn.discordapp.com/attachments/703284067696771083/1202480668018352158/trash-regular-24.png?ex=65cd9c64&is=65bb2764&hm=27a6504e352302e70c0c8d195c69fe04718d71531ff0c5d8f963eb84da5a19bb&" alt="Trash Can Image" class="trash-img">
+						</div>
 					</div>
-					<div class="post-it-trash-container">
-						<img src="https://cdn.discordapp.com/attachments/703284067696771083/1202480668018352158/trash-regular-24.png?ex=65cd9c64&is=65bb2764&hm=27a6504e352302e70c0c8d195c69fe04718d71531ff0c5d8f963eb84da5a19bb&" alt="Trash Can Image" class="trash-img">
-					</div>
-				</div>
-		    `;
+				`;
+				})
+				.join('')}
+		</div>
+			`;
 		/* No me toma la carpeta de imagenes */
 
-		const postItCheckbox = this.shadow.querySelector('.post-it-checkbox');
-		const postItItem = this.shadow.querySelector('.post-it-item');
-		const postItBlock = this.shadow.querySelector('.post-it-block');
-		const postItTrashImage = this.shadow.querySelector('.trash-img');
-		/* Cambiar el icono de la basura porque no se puede usar como un elemento after */
+		const postItCheckboxs = this.shadow.querySelectorAll('.post-it-checkbox');
+		const postItBlocks = this.shadow.querySelectorAll('.post-it-block');
 
-		postItCheckbox?.addEventListener('click', () => {
-			postItItem?.classList.toggle('done');
+		/* VER SI SE PUEDE SOLUCIONAR QUE CUANDO APRETO UN CHECKBOX TAMBIEN SE MARCA EN NEGRO (es como que toma que apreto el bloque también) */
+		/* SEGUN DICE LA CONSIGNA CREO QUE ESTO DEBERIA HACERLO DESDE EL INDEX.TS PRINCIPAL */
+		postItCheckboxs?.forEach((postItCheckBox) => {
+			postItCheckBox.addEventListener('click', () => {
+				const postItItem = postItCheckBox.parentElement?.querySelector('.post-it-item');
+				const postItContent = postItItem?.textContent;
+
+				postItItem?.classList.toggle('done');
+				postItItem?.classList.contains('done') ? console.log('si') : console.log('no');
+
+				/* No sé que problema hay acá que no lo quiere actualizar, se bugea el renderizado */
+				// if (postItItem?.classList.contains('done')) {
+				// 	state.addTask(postItContent, 'completed');
+				// } else {
+				// 	state.removeTask(postItContent, 'completed');
+				// }
+			});
 		});
 
-		postItBlock?.addEventListener('click', () => {
-			postItBlock.classList.toggle('active');
-			postItTrashImage?.classList.toggle('active');
+		postItBlocks?.forEach((postItBlock) => {
+			postItBlock.addEventListener('click', () => {
+				const postItItem = postItBlock.querySelector('.post-it-item');
+				const postItContent = postItItem?.textContent;
+				const postItTrashImage = postItBlock.querySelector('.trash-img');
 
-			postItTrashImage?.addEventListener('click', () => {
-				postItBlock?.remove();
-				/* No sé cómo arreglar que no vaya sumando los gaps */
+				postItBlock.classList.toggle('active');
+				postItTrashImage?.classList.toggle('active');
+
+				postItTrashImage?.addEventListener('click', () => {
+					postItBlock?.remove();
+					state.addTask(postItContent, 'eliminated');
+					state.removeTask(postItContent, 'all');
+					/* No sé que problema hay acá que no lo quiere actualizar, se bugea el renderizado */
+					// if (postItItem?.classList.contains('done')) state.removeTask(postItContent, 'completed');
+				});
 			});
 		});
 
 		const style = document.createElement('style');
 		style.innerHTML = `
+		.post-it__container {
+			margin-top: 45px;
+			display: grid;
+			gap: 20px;
+		}
+		@media (min-width: 960px) {
+			.post-it__container {
+				grid-template-columns: repeat(3, 1fr);
+			}
+		}
 		  .post-it-block {
         min-height: 90px;
 				overflow: hidden;
