@@ -80,9 +80,10 @@ class PostIt extends HTMLElement {
 				postItTrashImage?.classList.toggle('active');
 
 				postItTrashImage?.addEventListener('click', () => {
-					postItBlock?.remove();
-					state.addTask(postItContent, 'eliminated');
+					console.log(postItBlock);
+					postItBlock?.remove(); // si tienen el mismo nombre se borran las dos
 					state.removeTask(postItContent, 'all');
+					state.addTask(postItContent, 'eliminated');
 					/* No sé que problema hay acá que no lo quiere actualizar, se bugea el renderizado */
 					// if (postItItem?.classList.contains('done')) state.removeTask(postItContent, 'completed');
 				});
@@ -101,15 +102,15 @@ class PostIt extends HTMLElement {
 				grid-template-columns: repeat(3, 1fr);
 			}
 		}
-		  .post-it-block {
-        min-height: 90px;
-				overflow: hidden;
-        background-color: #FFF599;
-        border-radius: 4px;
-				padding: 20px 12px;
-				display: flex;
-				flex-direction: column;
-				justify-content: space-between;
+		.post-it-block {
+        	min-height: 90px;
+			overflow: hidden;
+        	background-color: #FFF599;
+        	border-radius: 4px;
+			padding: 20px 12px;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
 			}
 			.post-it-block.active {
 				border: 3px solid #000;
