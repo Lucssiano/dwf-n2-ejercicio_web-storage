@@ -15,6 +15,7 @@ export const state = {
 	setState(newState) {
 		this.data = newState;
 		// localStorage.setItem('state', JSON.stringify(newState)); // Creo que solo con esta línea basta para que se guarde en el localStorage
+		// localStorage.removeItem('state');
 		this.listeners.forEach((callback) => callback());
 		console.log('nueva data', this.data.tasks);
 	},

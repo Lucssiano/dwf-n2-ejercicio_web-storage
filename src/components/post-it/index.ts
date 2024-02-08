@@ -57,7 +57,7 @@ class PostIt extends HTMLElement {
 				const postItItem = postItCheckBox.parentElement?.querySelector('.post-it-item');
 				const postItContent = postItItem?.textContent;
 
-				postItItem?.classList.toggle('done');
+				postItItem?.classList.toggle('done'); /* Probar preguntando si está chequed */
 				// postItItem?.classList.contains('done') ? console.log('si') : console.log('no');
 
 				/* No sé que problema hay acá que no lo quiere actualizar, se bugea el renderizado */
