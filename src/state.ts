@@ -28,8 +28,9 @@ export const state = {
 	},
 	removeTask(task, type: taskType) {
 		const currentState = this.getState();
-		const newList = currentState.tasks.all.filter((el) => el !== task);
-		currentState.tasks[type] = newList;
+		const taskToRemove = currentState.tasks[type].find((el) => el === task);
+		const indexOfTaskToRemove = currentState.tasks[type].indexOf(taskToRemove);
+		currentState.tasks[type].splice(indexOfTaskToRemove, 1);
 		this.setState(currentState);
 	},
 };

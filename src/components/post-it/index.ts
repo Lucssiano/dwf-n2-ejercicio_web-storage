@@ -20,7 +20,6 @@ class PostIt extends HTMLElement {
 	syncWithState() {
 		const lastState = state.getState();
 		this.tasks = lastState.tasks;
-		// console.log(this.tasks);
 		this.render();
 	}
 
@@ -59,7 +58,7 @@ class PostIt extends HTMLElement {
 				const postItContent = postItItem?.textContent;
 
 				postItItem?.classList.toggle('done');
-				postItItem?.classList.contains('done') ? console.log('si') : console.log('no');
+				// postItItem?.classList.contains('done') ? console.log('si') : console.log('no');
 
 				/* No sé que problema hay acá que no lo quiere actualizar, se bugea el renderizado */
 				// if (postItItem?.classList.contains('done')) {
@@ -80,8 +79,7 @@ class PostIt extends HTMLElement {
 				postItTrashImage?.classList.toggle('active');
 
 				postItTrashImage?.addEventListener('click', () => {
-					console.log(postItBlock);
-					postItBlock?.remove(); // si tienen el mismo nombre se borran las dos
+					postItBlock?.remove();
 					state.removeTask(postItContent, 'all');
 					state.addTask(postItContent, 'eliminated');
 					/* No sé que problema hay acá que no lo quiere actualizar, se bugea el renderizado */
@@ -93,9 +91,9 @@ class PostIt extends HTMLElement {
 		const style = document.createElement('style');
 		style.innerHTML = `
 		.post-it__container {
-			margin-top: 45px;
-			display: grid;
-			gap: 20px;
+			 margin-top: 45px;
+			 display: grid;
+			 gap: 20px;
 		}
 		@media (min-width: 960px) {
 			.post-it__container {
@@ -103,14 +101,14 @@ class PostIt extends HTMLElement {
 			}
 		}
 		.post-it-block {
-        	min-height: 90px;
-			overflow: hidden;
-        	background-color: #FFF599;
-        	border-radius: 4px;
-			padding: 20px 12px;
-			display: flex;
-			flex-direction: column;
-			justify-content: space-between;
+       min-height: 90px;
+			 overflow: hidden;
+       background-color: #FFF599;
+       border-radius: 4px;
+			 padding: 20px 12px;
+			 display: flex;
+			 flex-direction: column;
+			 justify-content: space-between;
 			}
 			.post-it-block.active {
 				border: 3px solid #000;
