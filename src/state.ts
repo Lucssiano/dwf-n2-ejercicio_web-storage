@@ -8,7 +8,7 @@ type taskType = {
 export const state = {
 	data: {
 		// tasks: [] as taskType[],
-		task: [
+		tasks: [
 			{ id: 1, title: 'item 1', completed: false },
 			{ id: 2, title: 'item 2', deleted: true },
 			{ id: 3, title: 'item 3', completed: true },
@@ -31,6 +31,11 @@ export const state = {
 	subscribe(callback: (any) => any) {
 		this.listeners.push(callback);
 	},
+	getEnabledTasks(){
+	    const currentState = this.getState();
+		return currentState.tasks.filter(t => !t.deleted)
+    }
+	
 	// addTask(task, type: taskType) {
 	// 	const currentState = this.getState();
 	// 	currentState.tasks[type].push(task);

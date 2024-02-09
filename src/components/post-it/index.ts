@@ -1,6 +1,7 @@
 class PostIt extends HTMLElement {
 	shadow: ShadowRoot;
 	title: string;
+	// id: number;
 	checked: boolean = false;
 
 	constructor() {
@@ -11,6 +12,7 @@ class PostIt extends HTMLElement {
 	connectedCallback() {
 		this.title = this.getAttribute('title') || '';
 		this.checked = this.hasAttribute('checked');
+		this.id = this.getAttribute("id") || "";
 
 		this.render();
 	}
@@ -86,11 +88,13 @@ class PostIt extends HTMLElement {
 		this.shadow.appendChild(style);
 
 		const postItCheckbox = this.shadow.querySelector('.post-it-checkbox');
-		// const postItTitle = this.shadow.querySelector('.post-it-item');
 		postItCheckbox?.addEventListener('click', (e) => {
 			const target = e.target as HTMLInputElement;
-			// this.checked = target.checked;
-			// this.render();
+			const event = new CustomEvent("checkedChange", {detail: {
+				id: this.id,
+				checked: target.checked
+			}})
+			this.dispatchEvent(event);
 		});
 
 		// const postItCheckboxs = this.shadow.querySelectorAll('.post-it-checkbox');

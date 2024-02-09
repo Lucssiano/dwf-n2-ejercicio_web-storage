@@ -32,6 +32,8 @@ export function initHomePage(container) {
 		const form = e.target as HTMLFormElement;
 		const inputValue = form?.text.value;
 		// state.addTask(inputValue, 'all');
+   const prueba = state.getEnabledTasks();
+   console.log(prueba)
 		form.reset();
 	});
 
