@@ -1,8 +1,8 @@
 class PostIt extends HTMLElement {
 	shadow: ShadowRoot;
 	title: string;
-	// id: number;
-	checked: boolean = false;
+	// id: number; /* No entiendo por qué no me deja agregar un id tipo number */
+	checked: boolean;
 
 	constructor() {
 		super();
@@ -12,7 +12,7 @@ class PostIt extends HTMLElement {
 	connectedCallback() {
 		this.title = this.getAttribute('title') || '';
 		this.checked = this.hasAttribute('checked');
-		this.id = this.getAttribute("id") || "";
+		this.id = this.getAttribute('id') || '';
 
 		this.render();
 	}
@@ -20,7 +20,7 @@ class PostIt extends HTMLElement {
 	render() {
 		this.shadow.innerHTML = `
 				<div class="post-it__container">
-						<div class="post-it-block">
+						<div class="post-it-block ${this.checked ? 'checked' : ''}">
 								<div class="post-it-block__container">
 									  <h4 class="post-it-item ${this.checked ? 'checked' : ''}">${this.title}</h4>
 										<input type="checkbox" class="post-it-checkbox" ${this.checked ? 'checked' : ''}>
@@ -32,18 +32,37 @@ class PostIt extends HTMLElement {
 				</div>
 				`;
 
+		const postItCheckbox = this.shadow.querySelector('.post-it-checkbox');
+		postItCheckbox?.addEventListener('click', (e) => {
+			const target = e.target as HTMLInputElement;
+			const event = new CustomEvent('checkedChange', {
+				detail: {
+					id: this.id,
+					checked: target.checked,
+				},
+			});
+			this.dispatchEvent(event);
+		});
+
+		const postItBlock = this.shadow.querySelector('.post-it-block');
+		const postItTrashImage = this.shadow.querySelector('.trash-img');
+
+		postItBlock?.addEventListener('click', () => {
+			postItBlock.classList.toggle('active');
+			postItTrashImage?.classList.toggle('active');
+			postItTrashImage?.addEventListener('click', (e) => {
+				postItBlock.remove();
+				const event = new CustomEvent('delete', {
+					detail: {
+						id: this.id,
+					},
+				});
+				this.dispatchEvent(event);
+			});
+		});
+
 		const style = document.createElement('style');
 		style.innerHTML = `
-		.post-it__container {
-			 margin-top: 45px;
-			 display: grid;
-			 gap: 20px;
-		}
-		@media (min-width: 960px) {
-			.post-it__container {
-				grid-template-columns: repeat(3, 1fr);
-			}
-		}
 		.post-it-block {
        min-height: 90px;
 			 overflow: hidden;
@@ -86,52 +105,6 @@ class PostIt extends HTMLElement {
 			`;
 
 		this.shadow.appendChild(style);
-
-		const postItCheckbox = this.shadow.querySelector('.post-it-checkbox');
-		postItCheckbox?.addEventListener('click', (e) => {
-			const target = e.target as HTMLInputElement;
-			const event = new CustomEvent("checkedChange", {detail: {
-				id: this.id,
-				checked: target.checked
-			}})
-			this.dispatchEvent(event);
-		});
-
-		// const postItCheckboxs = this.shadow.querySelectorAll('.post-it-checkbox');
-		// const postItBlocks = this.shadow.querySelectorAll('.post-it-block');
-		// /* VER SI SE PUEDE SOLUCIONAR QUE CUANDO APRETO UN CHECKBOX TAMBIEN SE MARCA EN NEGRO (es como que toma que apreto el bloque también) */
-		// /* SEGUN DICE LA CONSIGNA CREO QUE ESTO DEBERIA HACERLO DESDE EL INDEX.TS PRINCIPAL */
-		// postItCheckboxs?.forEach((postItCheckBox) => {
-		// 	postItCheckBox.addEventListener('click', () => {
-		// 		const postItItem = postItCheckBox.parentElement?.querySelector('.post-it-item');
-		// 		const postItContent = postItItem?.textContent;
-		// 		postItItem?.classList.toggle('done');
-		// 		// postItItem?.classList.contains('done') ? console.log('si') : console.log('no');
-		// 		/* No sé que problema hay acá que no lo quiere actualizar, se bugea el renderizado */
-		// 		// if (postItItem?.classList.contains('done')) {
-		// 		// 	state.addTask(postItContent, 'completed');
-		// 		// } else {
-		// 		// 	state.removeTask(postItContent, 'completed');
-		// 		// }
-		// 	});
-		// });
-		// postItBlocks?.forEach((postItBlock) => {
-		// 	postItBlock.addEventListener('click', () => {
-		// 		const postItItem = postItBlock.querySelector('.post-it-item');
-		// 		const postItContent = postItItem?.textContent;
-		// 		const postItTrashImage = postItBlock.querySelector('.trash-img');
-		// 		postItBlock.classList.toggle('active');
-		// 		postItTrashImage?.classList.toggle('active');
-		// 		postItTrashImage?.addEventListener('click', () => {
-		// 			postItBlock?.remove();
-		// 			state.removeTask(postItContent, 'all');
-		// 			state.addTask(postItContent, 'eliminated');
-		// 			/* No sé que problema hay acá que no lo quiere actualizar, se bugea el renderizado */
-		// 			// if (postItItem?.classList.contains('done')) state.removeTask(postItContent, 'completed');
-		// 		});
-		// 	});
-		// });
 	}
 }
-
 customElements.define('post-it', PostIt);
