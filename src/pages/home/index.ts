@@ -54,6 +54,8 @@ export function initHomePage(container) {
 			postIt.addEventListener('checkedChange', (e) => {
 				const event = e as any;
 				state.changeTaskStatus(event.detail.id, event.detail.checked);
+				if (event.detail.checked) state.moveTaskToEnd(task);
+				else state.moveTaskToBeggining(task);
 			});
 
 			postIt.addEventListener('delete', (e) => {

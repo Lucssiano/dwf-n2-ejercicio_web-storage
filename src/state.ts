@@ -36,7 +36,20 @@ export const state = {
 		currentState.tasks.push(task);
 		this.setState(currentState);
 	},
-	/* Ver si puedo unificar los dos proximos metodos */
+	moveTaskToBeggining(task: taskType) {
+		const currentState = this.getState();
+		const taskIndex = currentState.tasks.findIndex((t: taskType) => t.id === task.id);
+		currentState.tasks.splice(taskIndex, 1);
+		currentState.tasks.unshift(task);
+		this.setState(currentState);
+	},
+	moveTaskToEnd(task: taskType) {
+		const currentState = this.getState();
+		const taskIndex = currentState.tasks.findIndex((t: taskType) => t.id === task.id);
+		currentState.tasks.splice(taskIndex, 1);
+		currentState.tasks.push(task);
+		this.setState(currentState);
+	},
 	changeTaskStatus(taskId, checked: boolean) {
 		const currentState = this.getState();
 		/* taskId me está trayendo un string a pesar de ser un number, tuve que hacer el parseInt debido a eso */
