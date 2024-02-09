@@ -1,11 +1,10 @@
 import './components/post-it';
+import './pages/home';
+import { initHomePage } from './pages/home';
 import { state } from './state';
 
-const postItFormEl = document.querySelector('.post-it-form');
-postItFormEl?.addEventListener('submit', (e) => {
-	e.preventDefault();
-	const form = e.target as HTMLFormElement;
-	const inputValue = form?.text.value;
-	state.addTask(inputValue, 'all');
-	form.reset();
-});
+(function main() {
+	state.init();
+	const root = document.querySelector('.root');
+	initHomePage(root);
+})();
